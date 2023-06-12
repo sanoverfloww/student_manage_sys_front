@@ -49,30 +49,36 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: '控制面板',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '控制面板', icon: 'dashboard' }
     }]
   },
 
   {
-    path: '/example',
+    path: '/student',
     component: Layout,
-    redirect: '/example/table',
+    redirect: '/student/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    meta: { title: '学生信息管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
+        path: 'list',
         name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        component: () => import('@/views/student/list'),
+        meta: { title: '查看信息', icon: 'table' }
       },
       {
-        path: 'tree',
+        path: 'add',
         name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        component: () => import('@/views/student/add'),
+        meta: { title: '添加信息', icon: 'tree' }
+      },
+      {
+        path: 'search',
+        name: 'Tree',
+        component: () => import('@/views/student/search'),
+        meta: { title: '查询信息', icon: 'tree' }
       }
     ]
   },
