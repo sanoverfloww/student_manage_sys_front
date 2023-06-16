@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form v-show="!showRegisterForm" ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">登入界面</h3>
       </div>
 
       <el-form-item prop="username">
@@ -43,12 +43,27 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
+      <!--
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span>
       </div>
-
+      -->
     </el-form>
+    <!--
+    <el-form v-show="showRegisterForm" :model="registerForm" :rules="registerRules" class="login-form" auto-complete="on" label-position="left">
+      
+      <el-form-item prop="password">
+        <el-input v-model="registerForm.password" type="password" placeholder="Password"></el-input>
+      </el-form-item>
+      
+      <el-form-item prop="confirmPassword">
+        <el-input v-model="registerForm.confirmPassword" type="password" placeholder="Confirm Password"></el-input>
+      </el-form-item>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:10px;" @click.native.prevent="handleRegister">Register</el-button>
+      <el-button type="text" @click="showRegisterForm = false" style="width:100%;">Back to Login</el-button>
+    </el-form>
+    -->
   </div>
 </template>
 
@@ -165,7 +180,7 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.6);
     border-radius: 5px;
     color: #454545;
   }
@@ -180,9 +195,24 @@ $light_gray:#eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
-  overflow: hidden;
-
+  //background-image: url('../../assets/Login_pic.png');
+  //background-repeat: no-repeat;
+  //background-size: cover;
+  //background-color: rgba(255, 255, 255, 0.8); /* 调整透明度的值 */
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/Login_pic.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.8; /* 控制透明度 */
+    z-index: -1;
+  }
   .login-form {
     position: relative;
     width: 520px;

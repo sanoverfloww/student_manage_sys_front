@@ -60,7 +60,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/student/table',
     name: 'Example',
-    meta: { title: '学生信息管理', icon: 'el-icon-s-help' },
+    meta: { title: '学生信息', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'list',
@@ -84,14 +84,57 @@ export const constantRoutes = [
   },
 
   {
-    path: '/form',
+    path: '/grade',
     component: Layout,
+    redirect: '/grade/table',
+    name: 'Example',
+    meta: { title: '成绩信息', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'list',
+        name: 'Table',
+        component: () => import('@/views/grade/list'),
+        meta: { title: '查看信息', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: 'Tree',
+        component: () => import('@/views/grade/add'),
+        meta: { title: '添加信息', icon: 'tree' }
+      },
+      {
+        path: 'search',
+        name: 'Tree',
+        component: () => import('@/views/grade/search'),
+        meta: { title: '查询信息', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
+    path: '/awards',
+    component: Layout,
+    redirect: '/awards/table',
+    name: 'Example',
+    meta: { title: '奖惩信息', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'list',
+        name: 'Table',
+        component: () => import('@/views/awards/list'),
+        meta: { title: '查看信息', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: 'Tree',
+        component: () => import('@/views/awards/add'),
+        meta: { title: '添加信息', icon: 'tree' }
+      },
+      {
+        path: 'search',
+        name: 'Tree',
+        component: () => import('@/views/awards/search'),
+        meta: { title: '查询信息', icon: 'tree' }
       }
     ]
   },
