@@ -1,11 +1,24 @@
 <template>
   <div>
-    <el-table :data="students" border>
+    <!-- 搜索栏 -->
+    <div class="search-bar">
+      <el-input
+        placeholder="请输入学号或姓名"
+        v-model="searchQuery"
+        clearable
+        @clear="filterStudents"
+        @input="filterStudents"
+        style="width: 300px;"
+      >
+        <el-button slot="append" icon="el-icon-search" @click="filterStudents"></el-button>
+      </el-input>
+    </div>
+    <el-table :data="filteredStudents" border>
       <el-table-column label="学号" prop="id" header-align="center"></el-table-column>
       <el-table-column label="姓名" prop="name" header-align="center"></el-table-column>
       <el-table-column label="班级" prop="class" header-align="center"></el-table-column>
       <el-table-column label="专业" prop="major" header-align="center"></el-table-column>
-      <el-table-column label="院系" prop="department" header-align="center"></el-table-column>
+      <el-table-column label="院系" prop="college" header-align="center"></el-table-column>
       <el-table-column label="操作" header-align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="editStudent(scope.row)">
@@ -63,26 +76,22 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+  async mounted() {
+    try {
+      const response = await axios.get('/api/students')
+      this.students = response.data;
+      this.filteredStudents = [...this.students]; // 设置 filteredStudents 的初始值
+    } catch (error) {
+      console.error('Error fetching students:', error)
+    }
+  },
   data() {
     return {
-      students: [
-        {
-          id: '001',
-          name: '张三',
-          class: '1班',
-          major: '计算机科学',
-          department: '计算机学院'
-        },
-        {
-          id: '002',
-          name: '李四',
-          class: '2班',
-          major: '信息管理',
-          department: '信息学院'
-        },
-        // 添加更多的学生数据...
-      ],
+      searchQuery: '',
+      filteredStudents: [],
+      students: null,
       deleteDialogVisible: false,
       editDialogVisible: false,
       selectedStudent: null,
@@ -95,22 +104,38 @@ export default {
       }
     };
   },
+  created() {
+    // 初始化 filteredStudents 为所有学生
+    this.filteredStudents = [...this.students];
+  },
   methods: {
+    filterStudents() {
+      if (this.searchQuery.trim() === '') {
+        this.filteredStudents = [...this.students];
+      } else {
+        const query = this.searchQuery.toLowerCase();
+        this.filteredStudents = this.students.filter(
+          student =>
+            student.id.toLowerCase().includes(query) ||
+            student.name.toLowerCase().includes(query)
+        );
+      }
+    },
     editStudent(student) {
-      this.selectedStudent = student;
-      this.editDialogForm = { ...student }; // Populate the edit form with the student's data
-      this.editDialogVisible = true;
+      this.selectedStudent = student
+      this.editDialogForm = { ...student } // Populate the edit form with the student's data
+      this.editDialogVisible = true
     },
     showDeleteConfirm(student) {
-      this.selectedStudent = student;
-      this.deleteDialogVisible = true;
+      this.selectedStudent = student
+      this.deleteDialogVisible = true
     },
     deleteStudentConfirm() {
       if (this.selectedStudent) {
         const index = this.students.indexOf(this.selectedStudent);
         if (index > -1) {
-          this.students.splice(index, 1);
-          console.log('删除学生', this.selectedStudent);
+          this.students.splice(index, 1)
+          console.log('删除学生', this.selectedStudent)
         }
       }
       this.deleteDialogVisible = false;
@@ -143,7 +168,7 @@ export default {
           name: '',
           class: '',
           major: '',
-          department: ''
+          college: ''
         };
       }
       done();
@@ -159,5 +184,11 @@ export default {
 
 .el-table td .cell {
   text-align: center;
+}
+
+.search-bar {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 </style>

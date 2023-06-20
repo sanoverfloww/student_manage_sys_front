@@ -1,6 +1,18 @@
 <template>
   <div>
-    <el-table :data="rewardsAndPenalties" border>
+    <div class="search-bar">
+      <el-input
+        placeholder="请输入学号或姓名"
+        v-model="searchText"
+        clearable
+        @clear="handleSearch"
+        @input="handleSearch"
+        style="width: 300px;"
+      >
+        <el-button slot="append" icon="el-icon-search" @click="filterStudents"></el-button>
+      </el-input>
+    </div>
+    <el-table :data="filteredRewardsAndPenalties" border>
       <el-table-column label="学号" prop="id" header-align="center" :align="centerAlign"></el-table-column>
       <el-table-column label="姓名" prop="name" header-align="center" :align="centerAlign"></el-table-column>
       <el-table-column label="班级" prop="class" header-align="center" :align="centerAlign"></el-table-column>
@@ -80,6 +92,8 @@
 export default {
   data() {
     return {
+      searchText: '',
+      filteredRewardsAndPenalties: [],
       rewardsAndPenalties: [
         {
           id: '001',
@@ -89,7 +103,7 @@ export default {
           department: '计算机学院',
           rewardId: '001',
           rewardName: '优秀奖学金',
-          rewardPlan: '获得一定金额的奖学金'
+          rewardPlan: '3000元奖学金'
         },
         {
           id: '002',
@@ -119,7 +133,20 @@ export default {
       centerAlign: 'center'
     };
   },
+  created() {
+    // 初始化 filteredStudents 为所有学生
+    this.filteredRewardsAndPenalties = [...this.rewardsAndPenalties];
+  },
   methods: {
+    handleSearch() {
+      if (this.searchText === "") {
+        this.filteredRewardsAndPenalties = this.rewardsAndPenalties;
+      } else {
+        this.filteredRewardsAndPenalties = this.rewardsAndPenalties.filter(item =>
+          item.id.includes(this.searchText) || item.name.includes(this.searchText)
+        );
+      }
+    },
     editRewardOrPenalty(index) {
       this.selectedRewardOrPenaltyIndex = index;
       const selectedRewardOrPenalty = this.rewardsAndPenalties[index];
@@ -191,5 +218,11 @@ export default {
 
 .el-table td .cell {
   text-align: center;
+}
+
+.search-bar {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 </style>
