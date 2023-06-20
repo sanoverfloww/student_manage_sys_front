@@ -1,6 +1,19 @@
 <template>
   <div>
-    <el-table :data="scores" border>
+    <div class="search-bar">
+      <el-input
+        placeholder="请输入学号、姓名或科目"
+        v-model="searchQuery"
+        clearable
+        @clear="filterScores"
+        @input="filterScores"
+        style="width: 300px;"
+      >
+        <el-button slot="append" icon="el-icon-search" @click="filterScores"></el-button>
+      </el-input>
+    </div>
+
+    <el-table :data="filteredScores" border>
       <el-table-column label="学号" prop="id" header-align="center"></el-table-column>
       <el-table-column label="姓名" prop="name" header-align="center"></el-table-column>
       <el-table-column label="课程" prop="course" header-align="center"></el-table-column>
@@ -64,6 +77,8 @@
 export default {
   data() {
     return {
+      searchQuery: '',
+      filteredScores: [],
       scores: [
         {
           id: '001',
@@ -76,6 +91,24 @@ export default {
           name: '李四',
           course: '英语',
           score: 85
+        },
+        {
+          id: '002',
+          name: '李四',
+          course: '语文',
+          score: 70
+        },
+        {
+          id: '002',
+          name: '李四',
+          course: '物理',
+          score: 80
+        },
+        {
+          id: '003',
+          name: '李四',
+          course: '数学',
+          score: 83
         },
         // 添加更多的成绩数据...
       ],
@@ -90,7 +123,24 @@ export default {
       selectedScoreIndex: -1
     };
   },
+  created() {
+    // 初始化 filteredScores 为所有成绩
+    this.filteredScores = [...this.scores];
+  },
   methods: {
+    filterScores() {
+      if (this.searchQuery.trim() === '') {
+        this.filteredScores = [...this.scores];
+      } else {
+        const query = this.searchQuery.toLowerCase();
+        this.filteredScores = this.scores.filter(
+          score =>
+            score.id.toLowerCase().includes(query) ||
+            score.name.toLowerCase().includes(query) ||
+            score.course.toLowerCase().includes(query)
+        );
+      }
+    },
     editScore(index) {
       this.selectedScoreIndex = index;
       const selectedScore = this.scores[index];
