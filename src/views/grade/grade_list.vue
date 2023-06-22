@@ -131,8 +131,7 @@ export default {
         try {
           const response = await axios.delete(
             `http://localhost:5000/grades/${this.selectedGrade.student_id}/${this.selectedGrade.course}`
-          );
-
+          )
           if (response.data.message) {
             const index = this.grades.findIndex(
               grade =>
