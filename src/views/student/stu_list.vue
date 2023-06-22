@@ -133,12 +133,12 @@ export default {
       if (this.selectedStudent) {
         try {
           // 发送 DELETE 请求到后端以删除选定的学生
-          const response = await axios.delete(`http://localhost:5000/students/${this.selectedStudent.student_id}`);
+          const response = await axios.delete(`http://localhost:5000/students/${this.selectedStudent.student_id}`)
 
           // 检查响应是否表示成功
           if (response.data.message) {
             // 从本地数据中删除学生并更新视图
-            const index = this.students.findIndex(student => student.student_id === this.selectedStudent.student_id);
+            const index = this.students.findIndex(student => student.student_id === this.selectedStudent.student_id)
             if (index > -1) {
               this.students.splice(index, 1)
               this.filteredStudents = [...this.students]

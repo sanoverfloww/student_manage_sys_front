@@ -58,20 +58,20 @@ export const constantRoutes = [
   {
     path: '/student',
     component: Layout,
-    redirect: '/student/table',
+    // redirect: '/student/table',
     name: 'Example',
     meta: { title: '学生信息', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'list',
         name: 'Table',
-        component: () => import('@/views/student/list'),
+        component: () => import('@/views/student/stu_list.vue'),
         meta: { title: '查看信息', icon: 'table' }
       },
       {
         path: 'add',
         name: 'Tree',
-        component: () => import('@/views/student/add'),
+        component: () => import('@/views/student/stu_add.vue'),
         meta: { title: '添加信息', icon: 'tree' }
       }
     ]
@@ -87,13 +87,13 @@ export const constantRoutes = [
       {
         path: 'list',
         name: 'Table',
-        component: () => import('@/views/grade/list'),
+        component: () => import('@/views/grade/grade_list.vue'),
         meta: { title: '查看信息', icon: 'table' }
       },
       {
         path: 'add',
         name: 'Tree',
-        component: () => import('@/views/grade/add'),
+        component: () => import('@/views/grade/grade_add.vue'),
         meta: { title: '添加信息', icon: 'tree' }
       }
     ]
@@ -109,13 +109,13 @@ export const constantRoutes = [
       {
         path: 'list',
         name: 'Table',
-        component: () => import('@/views/awards/list'),
+        component: () => import('@/views/awards/r_and_p_list.vue'),
         meta: { title: '查看信息', icon: 'table' }
       },
       {
         path: 'add',
         name: 'Tree',
-        component: () => import('@/views/awards/add'),
+        component: () => import('@/views/awards/r_and_p_add.vue'),
         meta: { title: '添加信息', icon: 'tree' }
       }
     ]
