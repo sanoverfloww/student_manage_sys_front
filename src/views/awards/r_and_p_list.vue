@@ -21,7 +21,7 @@
       <el-table-column label="学院" prop="college" header-align="center"></el-table-column>
       <el-table-column label="奖惩编号" prop="reward_id" header-align="center"></el-table-column>
       <el-table-column label="奖惩名称" prop="reward_name" header-align="center"></el-table-column>
-      <el-table-column label="奖惩详情" header-align="center">
+      <el-table-column label="奖惩详情" prop="reward_plan" header-align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="showRewardPlan(scope.row)">
             点击查看
@@ -55,8 +55,20 @@
       width="50%"
       @close="rewardPlanDialogVisible = false"
     >
-      <p>{{ rewardPlan }}</p>
+      <div v-if="!editMode">
+        <p>{{ rewardPlan }}</p>
+      </div>
+      <div v-else>
+        <el-input
+          type="textarea"
+          :rows="4"
+          placeholder="请输入奖惩详情"
+          v-model="rewardPlan"
+        ></el-input>
+      </div>
       <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="toggleEditMode" v-if="!editMode">编辑</el-button>
+        <el-button type="primary" @click="editRewardAndPenaltyConfirm" v-if="editMode">保存</el-button>
         <el-button @click="rewardPlanDialogVisible = false">关闭</el-button>
       </div>
     </el-dialog>
@@ -64,7 +76,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   data() {
@@ -75,41 +87,45 @@ export default {
       deleteDialogVisible: false,
       rewardPlanDialogVisible: false,
       selectedRewardAndPenalty: null,
-      rewardPlan: ''
-    };
+      rewardPlan: '',
+      viewDialogVisible: false,
+      editMode: false
+    }
   },
   async mounted() {
-    await this.fetchRewardsAndPenalties();
+    await this.fetchRewardsAndPenalties()
   },
   methods: {
     async fetchRewardsAndPenalties() {
       try {
-        const response = await axios.get('/api/rewards_and_penalties');
-        this.rewardsAndPenalties = response.data;
-        this.filteredRewardsAndPenalties = [...this.rewardsAndPenalties];
+        const response = await axios.get('/api/rewards_and_penalties')
+        this.rewardsAndPenalties = response.data
+        this.filteredRewardsAndPenalties = [...this.rewardsAndPenalties]
       } catch (error) {
-        console.error('Error fetching rewards and penalties:', error);
+        console.error('Error fetching rewards and penalties:', error)
       }
     },
     filterRewardsAndPenalties() {
       if (this.searchQuery.trim() === '') {
-        this.filteredRewardsAndPenalties = [...this.rewardsAndPenalties];
+        this.filteredRewardsAndPenalties = [...this.rewardsAndPenalties]
       } else {
-        const query = this.searchQuery.toLowerCase();
+        const query = this.searchQuery.toLowerCase()
         this.filteredRewardsAndPenalties = this.rewardsAndPenalties.filter(
           item =>
             item.student_id.toLowerCase().includes(query) ||
             item.name.toLowerCase().includes(query)
-        );
+        )
       }
     },
     showRewardPlan(item) {
-      this.rewardPlan = item.reward_plan;
-      this.rewardPlanDialogVisible = true;
+      console.log('plan is', item)
+      this.selectedRewardAndPenalty = item
+      this.rewardPlan = item.reward_plan
+      this.rewardPlanDialogVisible = true
     },
     showDeleteConfirm(item) {
-      this.selectedRewardAndPenalty = item;
-      this.deleteDialogVisible = true;
+      this.selectedRewardAndPenalty = item
+      this.deleteDialogVisible = true
     },
     async deleteRewardAndPenaltyConfirm() {
       if (this.selectedRewardAndPenalty) {
@@ -148,6 +164,45 @@ export default {
         this.selectedRewardAndPenalty = null
       }
       done()
+    },
+    toggleEditMode() {
+      this.editMode = !this.editMode
+    },
+    async editRewardAndPenaltyConfirm() {
+      if (!this.editMode) {
+        return
+      }
+      this.selectedRewardAndPenalty.reward_plan = this.rewardPlan
+      console.log('selectedRewardAndPenalty:', this.selectedRewardAndPenalty);
+
+      // 发送一个PUT请求到服务器以更新奖惩信息
+      try {
+        const response = await axios.put(
+          `http://localhost:5000/rewards_and_penalties/${this.selectedRewardAndPenalty.student_id}/${this.selectedRewardAndPenalty.reward_id}`,
+          this.selectedRewardAndPenalty,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+
+        if (response.data.message) {
+          this.$message({
+            message: '奖惩信息更新成功',
+            type: 'success'
+          })
+          this.viewDialogVisible = false
+          this.editMode = false
+          await this.fetchRewardsAndPenalties() // 假设你有一个类似的方法来获取奖惩信息列表
+        }
+      } catch (error) {
+        console.error('Error updating reward and penalty:', error)
+        this.$message({
+          message: '更新奖惩信息失败',
+          type: 'error'
+        })
+      }
     }
   }
 }

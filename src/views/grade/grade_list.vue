@@ -118,13 +118,13 @@ export default {
       }
     },
     editGrade(grade) {
-      this.selectedGrade = grade;
-      this.editDialogForm = { ...grade };
-      this.editDialogVisible = true;
+      this.selectedGrade = grade
+      this.editDialogForm = { ...grade }
+      this.editDialogVisible = true
     },
     showDeleteConfirm(grade) {
-      this.selectedGrade = grade;
-      this.deleteDialogVisible = true;
+      this.selectedGrade = grade
+      this.deleteDialogVisible = true
     },
     async deleteGradeConfirm() {
       if (this.selectedGrade) {
@@ -138,7 +138,7 @@ export default {
               grade =>
                 grade.student_id === this.selectedGrade.student_id &&
                 grade.course === this.selectedGrade.course
-            );
+            )
             if (index > -1) {
               this.grades.splice(index, 1);
               this.filteredGrades = [...this.grades];
@@ -146,7 +146,7 @@ export default {
             this.$message({
               message: '成绩删除成功',
               type: 'success'
-            });
+            })
           }
         } catch (error) {
           console.error('Error deleting grade:', error);
