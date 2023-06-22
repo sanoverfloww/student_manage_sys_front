@@ -1,26 +1,26 @@
 <template>
   <div class="add-reward-and-penalty">
-    <h1>添加新的奖惩信息</h1>
+    <h1 style="text-align: center">添加新的奖惩信息</h1>
     <el-form ref="form" :model="newRewardAndPenaltyForm" label-width="80px">
       <el-form-item label="学号" prop="student_id" :rules="[{ required: true, message: '请输入学号', trigger: 'blur' }, { validator: validateStudentId, trigger: 'blur' }]">
         <el-input v-model="newRewardAndPenaltyForm.student_id"></el-input>
       </el-form-item>
-      <el-form-item label="姓名">
+      <el-form-item label="姓名" prop="name" :rules="[{ required: true, message: '请输入姓名', trigger: 'blur' }]">
         <el-input v-model="newRewardAndPenaltyForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="班级">
+      <el-form-item label="班级" prop="class" :rules="[{ required: true, message: '请输入班级', trigger: 'blur' }]">
         <el-input v-model="newRewardAndPenaltyForm.class"></el-input>
       </el-form-item>
-      <el-form-item label="专业">
+      <el-form-item label="专业" prop="major" :rules="[{ required: true, message: '请输入专业', trigger: 'blur' }]">
         <el-input v-model="newRewardAndPenaltyForm.major"></el-input>
       </el-form-item>
-      <el-form-item label="学院">
+      <el-form-item label="学院" prop="college" :rules="[{ required: true, message: '请输入学院', trigger: 'blur' }]">
         <el-input v-model="newRewardAndPenaltyForm.college"></el-input>
       </el-form-item>
-      <el-form-item label="奖惩编号">
+      <el-form-item label="奖惩编号" prop="reward_id" :rules="[{ required: true, message: '请输入奖惩编号', trigger: 'blur' }]">
         <el-input v-model="newRewardAndPenaltyForm.reward_id"></el-input>
       </el-form-item>
-      <el-form-item label="奖惩名称">
+      <el-form-item label="奖惩名称" prop="reward_name" :rules="[{ required: true, message: '请输入奖惩名称', trigger: 'blur' }]">
         <el-input v-model="newRewardAndPenaltyForm.reward_name"></el-input>
       </el-form-item>
       <el-form-item label="奖惩详情">
