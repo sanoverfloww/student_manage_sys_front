@@ -148,7 +148,7 @@ export default {
             })
           }
         } catch (error) {
-          console.error('Error deleting grade:', error);
+          console.error('Error deleting grade:', error)
           this.$message({
             message: '删除成绩失败',
             type: 'error'
@@ -160,10 +160,10 @@ export default {
     },
     handleDeleteDialogClose(done) {
       if (this.deleteDialogVisible) {
-        this.deleteDialogVisible = false;
-        this.selectedGrade = null;
+        this.deleteDialogVisible = false
+        this.selectedGrade = null
       }
-      done();
+      done()
     },
     async editGradeConfirm() {
       if (this.selectedGrade) {
