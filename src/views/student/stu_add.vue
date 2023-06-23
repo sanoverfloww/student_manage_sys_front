@@ -1,6 +1,6 @@
 <template>
   <div class="add-student">
-    <h1>添加新学生</h1>
+    <h1 style="text-align: center">添加新学生</h1>
     <el-form ref="form" :model="newStudentForm" :rules="rules" label-width="80px">
       <el-form-item label="学号" prop="student_id">
         <el-input v-model="newStudentForm.student_id"></el-input>
@@ -40,7 +40,8 @@ export default {
       rules: {
         student_id: [
           { required: true, message: '请输入学号', trigger: 'blur' },
-          { pattern: /^PB\d{8}$/, message: '学号格式错误，应为PB+8位数字', trigger: 'blur' }
+          { pattern: /^PB\d{8}$/, message: '学号格式错误，应为PB+8位数字', trigger: 'blur' },
+          { validator: this.checkStudentIdExists, trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
@@ -60,7 +61,7 @@ export default {
   methods: {
     async addStudent() {
       this.$refs.form.validate((valid) => {
-        if (!valid) return false;
+        if (!valid) return false
         axios.post(
           'http://localhost:5000/students',
           this.newStudentForm,
@@ -74,7 +75,7 @@ export default {
             this.$message({
               message: '学生添加成功',
               type: 'success'
-            });
+            })
             this.newStudentForm = {
               student_id: '',
               name: '',
@@ -82,7 +83,7 @@ export default {
               major: '',
               college: ''
             }
-            this.$refs.form.resetFields();
+            this.$refs.form.resetFields()
           }
         }).catch(error => {
           console.error('Error adding student:', error)
@@ -91,7 +92,23 @@ export default {
             type: 'error'
           })
         })
-      });
+      })
+    },
+    async checkStudentIdExists(rule, value, callback) {
+      if (!value) {
+        return callback()
+      }
+      try {
+        const response = await axios.post('http://localhost:5000/check_student_id', { student_id: value });
+        if (response.data.exists) {
+          callback(new Error('学号已存在'))
+        } else {
+          callback()
+        }
+      } catch (error) {
+        console.error('Error checking student id:', error)
+        callback(new Error('学号验证失败'))
+      }
     }
   }
 }
