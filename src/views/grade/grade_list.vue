@@ -114,7 +114,7 @@ export default {
             grade.student_id.toLowerCase().includes(query) ||
             grade.name.toLowerCase().includes(query) ||
             grade.course.toLowerCase().includes(query)
-        );
+        )
       }
     },
     editGrade(grade) {
