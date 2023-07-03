@@ -56,6 +56,27 @@ export const constantRoutes = [
   },
 
   {
+    path: '/user',
+    component: Layout,
+    name: 'Example',
+    meta: { title: '个人中心', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'update',
+        name: 'table',
+        component: () => import('@/views/user/update.vue'),
+        meta: { title: '查看信息', icon: 'table' }
+      },
+      {
+        path: 'updatepasswd',
+        name: 'table',
+        component: () => import('@/views/user/updatepasswd.vue'),
+        meta: { title: '修改密码', icon: 'table' }
+      },
+    ]
+  },
+
+  {
     path: '/student',
     component: Layout,
     // redirect: '/student/table',
@@ -95,6 +116,12 @@ export const constantRoutes = [
         name: 'Tree',
         component: () => import('@/views/grade/grade_add.vue'),
         meta: { title: '添加信息', icon: 'tree' }
+      },
+      {
+        path: 'report',
+        name: 'Tree',
+        component: () => import('@/views/grade/report.vue'),
+        meta: { title: '导出成绩单', icon: 'tree' }
       }
     ]
   },
