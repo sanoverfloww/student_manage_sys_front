@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   data() {
@@ -92,7 +92,7 @@ export default {
     };
   },
   async mounted() {
-    await this.fetchGrades();
+    await this.fetchGrades()
   },
   methods: {
     async fetchGrades() {
